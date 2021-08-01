@@ -1,8 +1,10 @@
+
+const bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 
 
-
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(function(req, res, next){
   console.log(`${req.method} ${req.path} - ${req.ip}`);
   next();
@@ -12,9 +14,13 @@ app.use('/public', express.static(__dirname + "/public"));
 
 app.route('/name')
   .get(function(req, res){
-    const { query } = req;
+    const { query  } = req;
     res.json({ name: `${query.first} ${query.last}` })
   })
+  .post(function(req, res){
+    const { body  } = req;
+    res.json({ name: `${body.first} ${body.last}` })
+  });
   
 
 app.get('/:word/echo', function(req, res){
