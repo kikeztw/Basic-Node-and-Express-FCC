@@ -28,7 +28,7 @@ app.get('/now',
     next();
   },
   function(req, res, next){ 
-    res.send({ time: req.time });    
+    res.json({ time: req.time });    
   }
 );
 
