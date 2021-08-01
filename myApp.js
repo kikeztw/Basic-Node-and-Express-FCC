@@ -12,6 +12,7 @@ app.use(function(req, res, next){
 app.use('/public', express.static(__dirname + "/public"));
 
 
+
 app.route('/name')
   .get(function(req, res){
     const { query  } = req;
@@ -28,15 +29,16 @@ app.get('/:word/echo', function(req, res){
   res.send({ echo: params.word });
 });
 
-app.get('/now', 
-  function(req, res, next){
-    req.time = new Date().toDateString();
-    next();
-  },
-  function(req, res, next){ 
-    res.json({ time: req.time });    
-  }
-);
+const timeMiddleware = (req, res, next) => {
+  req.time = new Date().toString();
+  next();
+};
+
+app.get('/now', timeMiddleware, function(req, res, next){ 
+  res.send({ 
+    time: req.time 
+  });    
+});
 
 app.get('/json', function(req, res){
   const isUpperCase = process.env.MESSAGE_STYLE === 'uppercase';
